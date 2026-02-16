@@ -19,15 +19,15 @@ import org.springframework.util.CustomizableThreadCreator;
 
 /**
  * Tweaked version of original {@link org.springframework.core.task.SimpleAsyncTaskExecutor}
- * which helps to demonstrate an issue with a task which appears to be active 
+ * helps to demonstrate an issue with a submitted task which appears to be active 
  * while the executor is closed.
  * 
  * </p></p> 
  * A delay is inserted into {@link TaskTrackingRunnable#run()} method 
- * before adding current thread to {@link #activeThreads} collection. 
+ * before adding current thread to {@link #activeThreads} collection 
  * to emulate specific threads interleaving. 
- * This delay should be greater than a delay 
- * between start of a closing thread and start of submission thread 
+ * This delay should be greater than a delay {@link #THREAD_REGISTRATION_DELAY} 
+ * between start of a closing thread and start of submission thread. 
  * 
  * @see SimpleAsyncTaskExecutorGracefulShutdown
  * @see org.springframework.core.task.SimpleAsyncTaskExecutor  

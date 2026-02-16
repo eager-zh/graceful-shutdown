@@ -6,12 +6,12 @@ import java.util.concurrent.Future;
 import org.apache.commons.lang3.mutable.MutableObject;
 
 /**
- * Demonstrates an issue with task being active after 
+ * Demonstrates an issue with submitted task being active after 
  * {@link SimpleAsyncTaskExecutor} was closed.
  * The original {@link org.springframework.core.task.SimpleAsyncTaskExecutor} 
  * was tweaked to emulate threads interleaving leading to this issue.
  * 
- * <p/><p/> The delay between the start of a closing thread should be 
+ * <p/><p/> The delay between a start of a closing thread 
  * and a start of submission thread should be smaller than a delay 
  * inserted into {@link SimpleAsyncTaskExecutor}.  
  * 
