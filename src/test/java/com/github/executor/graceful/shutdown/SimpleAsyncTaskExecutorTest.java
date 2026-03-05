@@ -1,5 +1,7 @@
 package com.github.executor.graceful.shutdown;
 
+import java.util.concurrent.CancellationException;
+
 import org.junit.Test;
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Expect;
@@ -22,6 +24,10 @@ public class SimpleAsyncTaskExecutorTest extends JUnitJCStressTest {
 	
 	private volatile boolean closed;
 
+	public SimpleAsyncTaskExecutorTest() {
+		executor.setTaskTerminationTimeout(1_000_000);
+	}
+	
 	@Actor
 	public void actor1(I_Result r) {
 		executor.close();
@@ -35,14 +41,13 @@ public class SimpleAsyncTaskExecutorTest extends JUnitJCStressTest {
 				if (closed)
 					r.r1 = 1;
 			});
-		} catch (TaskRejectedException e) {
+		} catch (TaskRejectedException | CancellationException e) {
 		}
 	}
 
 	@Test
 	public void test() throws Throwable {
-		executor.setTaskTerminationTimeout(1_000_000);
 		super.test();
 	}
-
+	
 }
