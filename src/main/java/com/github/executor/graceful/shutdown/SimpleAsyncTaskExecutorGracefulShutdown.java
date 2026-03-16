@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 /**
  * Demonstrates an issue with submitted task being active after 
@@ -20,6 +21,8 @@ import org.apache.commons.lang3.mutable.MutableObject;
  */
 public class SimpleAsyncTaskExecutorGracefulShutdown {
 
+	private static final int DELAY_BETWEEN_SUBMISSION_AND_CLOSING = 3;
+
 	public static void main(String[] args) throws Throwable {
 		final SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
 		executor.setTaskTerminationTimeout(1_000_000);
@@ -35,7 +38,7 @@ public class SimpleAsyncTaskExecutorGracefulShutdown {
 			}));
 		});
 		
-		Thread.sleep(Duration.ofSeconds(SimpleAsyncTaskExecutor.THREAD_REGISTRATION_DELAY));
+		Thread.sleep(Duration.ofSeconds(DELAY_BETWEEN_SUBMISSION_AND_CLOSING));
 		
 		final Thread t2 = Thread.ofPlatform().start(() -> {
 			System.out.println("Executor closing...");

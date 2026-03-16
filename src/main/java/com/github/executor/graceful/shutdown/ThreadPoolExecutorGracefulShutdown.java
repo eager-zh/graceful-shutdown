@@ -14,6 +14,8 @@ import org.apache.commons.lang3.mutable.MutableObject;
  */
 public class ThreadPoolExecutorGracefulShutdown {
 
+	private static final int DELAY_BETWEEN_SUBMISSION_AND_CLOSING = 3;
+
 	public static void main(String[] args) throws Throwable {
 		final ExecutorService executor = Executors.newCachedThreadPool();
 		final MutableObject<Future<?>> future = new MutableObject<>();
@@ -27,7 +29,7 @@ public class ThreadPoolExecutorGracefulShutdown {
 			}));
 		});
 		
-		Thread.sleep(Duration.ofSeconds(SimpleAsyncTaskExecutor.THREAD_REGISTRATION_DELAY));
+		Thread.sleep(Duration.ofSeconds(DELAY_BETWEEN_SUBMISSION_AND_CLOSING));
 		
 		final Thread t2 = Thread.ofPlatform().start(() -> {
 			System.out.println("Executor closing...");
